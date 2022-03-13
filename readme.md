@@ -1,15 +1,16 @@
+To download the original English script, [please click here](https://github.com/abbodi1406/offlineinsiderenroll).
 # OfflineInsiderEnroll
 
 ![Screenshot of OfflineInsiderEnroll](https://i.imgur.com/hzusXzd.png)
 
-## Description
+## 描述
 
 OfflineInsiderEnroll is a simple Windows Command Prompt script to enable access
 to the Windows Insider Program on machines not signed in with Microsoft Account.
 
 This script is compatible only with Windows 11 or Windows 10 version 1809 and later.
 
-## Usage
+## 用法
 
 This script requires administrative priviliges to run. You can simply execute it
 by right clicking it > `Run as Administrator`.
@@ -42,7 +43,7 @@ To restore *`Windows Insider Program`* to default settings simply choose `Stop
 receiving Insider Preview builds` in `OfflineInsiderEnroll Script`. You will get prompted
 to reboot, because this option will disable *`Microsoft Flight Signing`*.
 
-## How does this work?
+## 此脚本如何运行？
 
 This script takes advantage of undocumented `TestFlags` registry value.
 If this value is set to `0x20`, all access to online *Windows Insider* services
@@ -52,6 +53,6 @@ configuration without being overriden by the contact to the service. Since
 you will get offered *Insider Preview* builds by just setting correct values in
 the registry.
 
-## License
+## 许可
 
-This project is licensed under the MIT License. See `LICENSE` for details.
+此项目使用 MIT License 许可。查看 "LICENSE" 文件以获取详细信息。
