@@ -1,15 +1,12 @@
-@setlocal DisableDelayedExpansion
 @echo off
 set "scriptver=2.6.3"
-
+setlocal EnableDelayedExpansion
 set "_cmdf=%~f0"
 if exist "%SystemRoot%\Sysnative\cmd.exe" (
-setlocal EnableDelayedExpansion
 start %SystemRoot%\Sysnative\cmd.exe /c ""!_cmdf!" "
 exit /b
 )
 if exist "%SystemRoot%\SysArm32\cmd.exe" if /i %PROCESSOR_ARCHITECTURE%==AMD64 (
-setlocal EnableDelayedExpansion
 start %SystemRoot%\SysArm32\cmd.exe /c ""!_cmdf!" "
 exit /b
 )
@@ -28,12 +25,12 @@ if %build% LSS 17763 (
     goto :EOF
 )
 
-reg query HKU\S-1-5-19 >nul 2>nul
+reg query HKU\S-1-5-19 >nul 2>&1
 if %ERRORLEVEL% equ 0 goto :START_SCRIPT
 set _PSarg="""%~f0""" -elevated
 if defined _args set _PSarg="""%~f0""" %_args:"="""% -elevated
 set _PSarg=%_PSarg:'=''%
-powershell -nop -c "start %ComSpec% -Arg '/c \"!_PSarg!\"' -verb runas >nul 2>nul
+powershell -nop -c "start %ComSpec% -Arg '/c \"!_PSarg!\"' -verb runas >nul 2>&1
 if %ERRORLEVEL% gtr 0 goto :E_Admin
 
 :START_SCRIPT
@@ -177,7 +174,7 @@ if %build% LSS 21990 goto :EOF
 echo Windows Registry Editor Version 5.00
 echo.
 echo [HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsSelfHost\UI\Strings]
-echo "StickyMessage"="{\"Message\":\"Device Enrolled Using OfflineInsiderEnroll\",\"LinkTitle\":\"\",\"LinkUrl\":\"\",\"DynamicXaml\":\"^<StackPanel xmlns=\\\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\\\"^>^<TextBlock Style=\\\"{StaticResource BodyTextBlockStyle }\\\"^>This device has been enrolled to the Windows Insider program using OfflineInsiderEnroll_zh-hans v%scriptver%. If you want to change settings of the enrollment or stop receiving Insider Preview builds, please use the script. ^<Hyperlink NavigateUri=\\\"https://github.com/realYulin/offlineinsiderenroll_zh-hans\\\" TextDecorations=\\\"None\\\"^>了解更多^</Hyperlink^>^</TextBlock^>^<TextBlock Text=\\\"Applied configuration\\\" Margin=\\\"0,20,0,10\\\" Style=\\\"{StaticResource SubtitleTextBlockStyle}\\\" /^>^<TextBlock Style=\\\"{StaticResource BodyTextBlockStyle }\\\" Margin=\\\"0,0,0,5\\\"^>^<Run FontFamily=\\\"Segoe MDL2 Assets\\\"^>^&#xECA7;^</Run^> ^<Span FontWeight=\\\"SemiBold\\\"^>%Fancy%^</Span^>^</TextBlock^>^<TextBlock Text=\\\"Channel: %Channel%\\\" Style=\\\"{StaticResource BodyTextBlockStyle }\\\" /^>^<TextBlock Text=\\\"Content: %Content%\\\" Style=\\\"{StaticResource BodyTextBlockStyle }\\\" /^>^<TextBlock Text=\\\"Telemetry settings notice\\\" Margin=\\\"0,20,0,10\\\" Style=\\\"{StaticResource SubtitleTextBlockStyle}\\\" /^>^<TextBlock Style=\\\"{StaticResource BodyTextBlockStyle }\\\"^>Windows Insider Program requires your diagnostic data collection settings to be set to ^<Span FontWeight=\\\"SemiBold\\\"^>Full^</Span^>. You can verify or modify your current settings in ^<Span FontWeight=\\\"SemiBold\\\"^>Diagnostics ^&amp; feedback^</Span^>.^</TextBlock^>^<Button Command=\\\"{StaticResource ActivateUriCommand}\\\" CommandParameter=\\\"ms-settings:privacy-feedback\\\" Margin=\\\"0,10,0,0\\\"^>^<TextBlock Margin=\\\"5,0,5,0\\\"^>Open Diagnostics ^&amp; feedback^</TextBlock^>^</Button^>^</StackPanel^>\",\"Severity\":0}"
+echo "StickyMessage"="{\"Message\":\"Device Enrolled Using OfflineInsiderEnroll_zh-hans\",\"LinkTitle\":\"\",\"LinkUrl\":\"\",\"DynamicXaml\":\"^<StackPanel xmlns=\\\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\\\"^>^<TextBlock Style=\\\"{StaticResource BodyTextBlockStyle }\\\"^>This device has been enrolled to the Windows Insider program using OfflineInsiderEnroll_zh-hans v%scriptver%. If you want to change settings of the enrollment or stop receiving Insider Preview builds, please use the script. ^<Hyperlink NavigateUri=\\\"https://github.com/realYulin/offlineinsiderenroll_zh-hans\\\" TextDecorations=\\\"None\\\"^>了解更多^</Hyperlink^>^</TextBlock^>^<TextBlock Text=\\\"应用的配置\\\" Margin=\\\"0,20,0,10\\\" Style=\\\"{StaticResource SubtitleTextBlockStyle}\\\" /^>^<TextBlock Style=\\\"{StaticResource BodyTextBlockStyle }\\\" Margin=\\\"0,0,0,5\\\"^>^<Run FontFamily=\\\"Segoe MDL2 Assets\\\"^>^&#xECA7;^</Run^> ^<Span FontWeight=\\\"SemiBold\\\"^>%Fancy%^</Span^>^</TextBlock^>^<TextBlock Text=\\\"频道：%Channel%\\\" Style=\\\"{StaticResource BodyTextBlockStyle }\\\" /^>^<TextBlock Text=\\\"内容：%Content%\\\" Style=\\\"{StaticResource BodyTextBlockStyle }\\\" /^>^<TextBlock Text=\\\"Telemetry settings notice\\\" Margin=\\\"0,20,0,10\\\" Style=\\\"{StaticResource SubtitleTextBlockStyle}\\\" /^>^<TextBlock Style=\\\"{StaticResource BodyTextBlockStyle }\\\"^>Windows Insider Program requires your diagnostic data collection settings to be set to ^<Span FontWeight=\\\"SemiBold\\\"^>Full^</Span^>. You can verify or modify your current settings in ^<Span FontWeight=\\\"SemiBold\\\"^>Diagnostics ^&amp; feedback^</Span^>.^</TextBlock^>^<Button Command=\\\"{StaticResource ActivateUriCommand}\\\" CommandParameter=\\\"ms-settings:privacy-feedback\\\" Margin=\\\"0,10,0,0\\\"^>^<TextBlock Margin=\\\"5,0,5,0\\\"^>Open Diagnostics ^&amp; feedback^</TextBlock^>^</Button^>^</StackPanel^>\",\"Severity\":0}"
 echo.
 )>"%SystemRoot%\oie.reg"
 regedit /s "%SystemRoot%\oie.reg"
@@ -186,8 +183,8 @@ goto :EOF
 
 :ENROLL
 echo 正在应用更改...
-call :RESET_INSIDER_CONFIG 1>NUL 2>NUL
-call :ADD_INSIDER_CONFIG 1>NUL 2>NUL
+call :RESET_INSIDER_CONFIG >nul 2>&1
+call :ADD_INSIDER_CONFIG >nul 2>&1
 bcdedit /set {current} flightsigning yes >nul 2>&1
 echo 完成
 
@@ -199,7 +196,7 @@ goto :EOF
 
 :STOP_INSIDER
 echo 正在应用更改...
-call :RESET_INSIDER_CONFIG 1>nul 2>nul
+call :RESET_INSIDER_CONFIG >nul 2>&1
 bcdedit /deletevalue {current} flightsigning >nul 2>&1
 echo Done.
 
