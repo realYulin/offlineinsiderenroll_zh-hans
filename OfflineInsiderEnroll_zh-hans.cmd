@@ -213,7 +213,7 @@ goto :EOF
 
 :ASK_FOR_REBOOT
 echo 需要重启以使更改生效。
-choice /m 是否现在重启电脑
+choice /m "是否现在重启电脑"
 if %ERRORLEVEL% equ 1 shutdown -r -t 0
 goto :EOF
 
