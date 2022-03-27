@@ -1,6 +1,7 @@
 @echo off
 set "scriptver=2.6.3"
 setlocal EnableDelayedExpansion
+echo 正在启动...
 set "_cmdf=%~f0"
 if exist "%SystemRoot%\Sysnative\cmd.exe" (
 start %SystemRoot%\Sysnative\cmd.exe /c ""!_cmdf!" "
@@ -30,11 +31,8 @@ exit /b
 set "FlightSigningEnabled=0"
 bcdedit /enum {current} | findstr /I /R /C:"^flightsigning *Yes$" >nul 2>&1
 if %ERRORLEVEL% equ 0 set "FlightSigningEnabled=1"
-
-:CHOICE_MENU
 cls
 title OfflineInsiderEnroll_zh-hans v%scriptver%
-set "choice="
 echo.
 echo 1 - 注册到 Dev 频道
 echo 2 - 注册到 Beta 频道
@@ -43,14 +41,12 @@ echo.
 echo 4 - 停止接收预览版本
 echo 5 - 退出而不进行任何更改
 echo.
-set /p choice="输入选项前的数字以继续："
-echo.
-if /I "%choice%"=="1" goto :ENROLL_DEV
-if /I "%choice%"=="2" goto :ENROLL_BETA
-if /I "%choice%"=="3" goto :ENROLL_RP
-if /I "%choice%"=="4" goto :STOP_INSIDER
-if /I "%choice%"=="5" goto :EOF
-goto :CHOICE_MENU
+choice /c 12345 /n /m "选择一个选项以继续："
+if %ERRORLEVEL% equ 1 goto :ENROLL_DEV
+if %ERRORLEVEL% equ 2 goto :ENROLL_BETA
+if %ERRORLEVEL% equ 3 goto :ENROLL_RP
+if %ERRORLEVEL% equ 4 goto :STOP_INSIDER
+if %ERRORLEVEL% equ 5 goto :EOF
 
 :ENROLL_RP
 set "Channel=ReleasePreview"
@@ -118,7 +114,7 @@ reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsSelfHost\Applicability" /f
 reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsSelfHost\Applicability" /f /t REG_SZ /v Ring /d "%Ring%"
 reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsSelfHost\Applicability" /f /t REG_SZ /v ContentType /d "%Content%"
 reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsSelfHost\Applicability" /f /t REG_SZ /v BranchName /d "%Channel%"
-if %build% LSS 21990 reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsSelfHost\UI\Strings" /f /t REG_SZ /v StickyXaml /d "<StackPanel xmlns="^""http://schemas.microsoft.com/winfx/2006/xaml/presentation"^""><TextBlock Style="^""{StaticResource BodyTextBlockStyle }"^"">此设备已使用 OfflineInsiderEnroll_zh-hans v%scriptver% 注册到 Windows 预览体验计划。 如果您想更改注册设置或停止接收预览版本，请使用该脚本。<Hyperlink NavigateUri="^""https://github.com/realYulin/offlineinsiderenroll_zh-hans"^"" TextDecorations="^""None"^"">了解更多</Hyperlink></TextBlock><TextBlock Text="^""Applied configuration"^"" Margin="^""0,20,0,10"^"" Style="^""{StaticResource SubtitleTextBlockStyle}"^"" /><TextBlock Style="^""{StaticResource BodyTextBlockStyle }"^"" Margin="^""0,0,0,5"^""><Run FontFamily="^""Segoe MDL2 Assets"^"">&#xECA7;</Run> <Span FontWeight="^""SemiBold"^"">%Fancy%</Span></TextBlock><TextBlock Text="^""频道：%Channel%"^"" Style="^""{StaticResource BodyTextBlockStyle }"^"" /><TextBlock Text="^""内容：%Content%"^"" Style="^""{StaticResource BodyTextBlockStyle }"^"" /><TextBlock Text="^""遥测设置通知"^"" Margin="^""0,20,0,10"^"" Style="^""{StaticResource SubtitleTextBlockStyle}"^"" /><TextBlock Style="^""{StaticResource BodyTextBlockStyle }"^"">Windows 预览体验计划要求将您的诊断数据收集设置设置为<Span FontWeight="^""SemiBold"^"">完整</Span>。您可以在<Span FontWeight="^""SemiBold"^"">诊断和反馈</Span>中验证或修改当前设置。</TextBlock><Button Command="^""{StaticResource ActivateUriCommand}"^"" CommandParameter="^""ms-settings:privacy-feedback"^"" Margin="^""0,10,0,0"^""><TextBlock Margin="^""5,0,5,0"^"">打开“诊断和反馈”</TextBlock></Button></StackPanel>"
+if %build% LSS 21990 reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsSelfHost\UI\Strings" /f /t REG_SZ /v StickyXaml /d "<StackPanel xmlns="^""http://schemas.microsoft.com/winfx/2006/xaml/presentation"^""><TextBlock Style="^""{StaticResource BodyTextBlockStyle }"^"">此设备已使用 OfflineInsiderEnroll 汉化版 v%scriptver% 注册到 Windows 预览体验计划。 如果您想更改注册设置或停止接收预览版本，请使用该脚本。<Hyperlink NavigateUri="^""https://github.com/realYulin/offlineinsiderenroll_zh-hans"^"" TextDecorations="^""None"^"">了解更多</Hyperlink></TextBlock><TextBlock Text="^""Applied configuration"^"" Margin="^""0,20,0,10"^"" Style="^""{StaticResource SubtitleTextBlockStyle}"^"" /><TextBlock Style="^""{StaticResource BodyTextBlockStyle }"^"" Margin="^""0,0,0,5"^""><Run FontFamily="^""Segoe MDL2 Assets"^"">&#xECA7;</Run> <Span FontWeight="^""SemiBold"^"">%Fancy%</Span></TextBlock><TextBlock Text="^""频道：%Channel%"^"" Style="^""{StaticResource BodyTextBlockStyle }"^"" /><TextBlock Text="^""内容：%Content%"^"" Style="^""{StaticResource BodyTextBlockStyle }"^"" /><TextBlock Text="^""遥测设置通知"^"" Margin="^""0,20,0,10"^"" Style="^""{StaticResource SubtitleTextBlockStyle}"^"" /><TextBlock Style="^""{StaticResource BodyTextBlockStyle }"^"">Windows 预览体验计划要求将您的诊断数据收集设置设置为<Span FontWeight="^""SemiBold"^"">完整</Span>。您可以在<Span FontWeight="^""SemiBold"^"">诊断和反馈</Span>中验证或修改当前设置。</TextBlock><Button Command="^""{StaticResource ActivateUriCommand}"^"" CommandParameter="^""ms-settings:privacy-feedback"^"" Margin="^""0,10,0,0"^""><TextBlock Margin="^""5,0,5,0"^"">打开“诊断和反馈”</TextBlock></Button></StackPanel>"
 reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsSelfHost\UI\Visibility" /f /t REG_DWORD /v UIHiddenElements /d 65535
 reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsSelfHost\UI\Visibility" /f /t REG_DWORD /v UIDisabledElements /d 65535
 reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsSelfHost\UI\Visibility" /f /t REG_DWORD /v UIServiceDrivenElementVisibility /d 0
@@ -167,7 +163,7 @@ if %build% LSS 21990 goto :EOF
 echo Windows Registry Editor Version 5.00
 echo.
 echo [HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsSelfHost\UI\Strings]
-echo "StickyMessage"="{\"Message\":\"已使用 OfflineInsiderEnroll_zh-hans 注册到 Windows 预览体验计划\",\"LinkTitle\":\"\",\"LinkUrl\":\"\",\"DynamicXaml\":\"^<StackPanel xmlns=\\\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\\\"^>^<TextBlock Style=\\\"{StaticResource BodyTextBlockStyle }\\\"^>此设备已使用 OfflineInsiderEnroll_zh-hans v%scriptver% 注册到 Windows 预览体验计划。 如果您想更改注册设置或停止接收预览版本，请使用该脚本。^<Hyperlink NavigateUri=\\\"https://github.com/realYulin/offlineinsiderenroll_zh-hans\\\" TextDecorations=\\\"None\\\"^>了解更多^</Hyperlink^>^</TextBlock^>^<TextBlock Text=\\\"应用的配置\\\" Margin=\\\"0,20,0,10\\\" Style=\\\"{StaticResource SubtitleTextBlockStyle}\\\" /^>^<TextBlock Style=\\\"{StaticResource BodyTextBlockStyle }\\\" Margin=\\\"0,0,0,5\\\"^>^<Run FontFamily=\\\"Segoe MDL2 Assets\\\"^>^&#xECA7;^</Run^> ^<Span FontWeight=\\\"SemiBold\\\"^>%Fancy%^</Span^>^</TextBlock^>^<TextBlock Text=\\\"频道：%Channel%\\\" Style=\\\"{StaticResource BodyTextBlockStyle }\\\" /^>^<TextBlock Text=\\\"内容：%Content%\\\" Style=\\\"{StaticResource BodyTextBlockStyle }\\\" /^>^<TextBlock Text=\\\"遥测设置通知\\\" Margin=\\\"0,20,0,10\\\" Style=\\\"{StaticResource SubtitleTextBlockStyle}\\\" /^>^<TextBlock Style=\\\"{StaticResource BodyTextBlockStyle }\\\"^>Windows 预览体验计划要求将您的诊断数据收集设置设置为^<Span FontWeight=\\\"SemiBold\\\"^>完整^</Span^>。您可以在^<Span FontWeight=\\\"SemiBold\\\"^>诊断和反馈^</Span^>中验证或修改当前设置。^</TextBlock^>^<Button Command=\\\"{StaticResource ActivateUriCommand}\\\" CommandParameter=\\\"ms-settings:privacy-feedback\\\" Margin=\\\"0,10,0,0\\\"^>^<TextBlock Margin=\\\"5,0,5,0\\\"^>打开“诊断和反馈”^</TextBlock^>^</Button^>^</StackPanel^>\",\"Severity\":0}"
+echo "StickyMessage"="{\"Message\":\"已使用 OfflineInsiderEnroll_zh-hans 注册到 Windows 预览体验计划\",\"LinkTitle\":\"\",\"LinkUrl\":\"\",\"DynamicXaml\":\"^<StackPanel xmlns=\\\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\\\"^>^<TextBlock Style=\\\"{StaticResource BodyTextBlockStyle }\\\"^>此设备已使用 OfflineInsiderEnroll 汉化版 v%scriptver% 注册到 Windows 预览体验计划。 如果您想更改注册设置或停止接收预览版本，请使用该脚本。^<Hyperlink NavigateUri=\\\"https://github.com/realYulin/offlineinsiderenroll_zh-hans\\\" TextDecorations=\\\"None\\\"^>了解更多^</Hyperlink^>^</TextBlock^>^<TextBlock Text=\\\"应用的配置\\\" Margin=\\\"0,20,0,10\\\" Style=\\\"{StaticResource SubtitleTextBlockStyle}\\\" /^>^<TextBlock Style=\\\"{StaticResource BodyTextBlockStyle }\\\" Margin=\\\"0,0,0,5\\\"^>^<Run FontFamily=\\\"Segoe MDL2 Assets\\\"^>^&#xECA7;^</Run^> ^<Span FontWeight=\\\"SemiBold\\\"^>%Fancy%^</Span^>^</TextBlock^>^<TextBlock Text=\\\"频道：%Channel%\\\" Style=\\\"{StaticResource BodyTextBlockStyle }\\\" /^>^<TextBlock Text=\\\"内容：%Content%\\\" Style=\\\"{StaticResource BodyTextBlockStyle }\\\" /^>^<TextBlock Text=\\\"遥测设置通知\\\" Margin=\\\"0,20,0,10\\\" Style=\\\"{StaticResource SubtitleTextBlockStyle}\\\" /^>^<TextBlock Style=\\\"{StaticResource BodyTextBlockStyle }\\\"^>Windows 预览体验计划要求将您的诊断数据收集设置设置为^<Span FontWeight=\\\"SemiBold\\\"^>完整^</Span^>。您可以在^<Span FontWeight=\\\"SemiBold\\\"^>诊断和反馈^</Span^>中验证或修改当前设置。^</TextBlock^>^<Button Command=\\\"{StaticResource ActivateUriCommand}\\\" CommandParameter=\\\"ms-settings:privacy-feedback\\\" Margin=\\\"0,10,0,0\\\"^>^<TextBlock Margin=\\\"5,0,5,0\\\"^>打开“诊断和反馈”^</TextBlock^>^</Button^>^</StackPanel^>\",\"Severity\":0}"
 echo.
 )>"%SystemRoot%\oie.reg"
 regedit /s "%SystemRoot%\oie.reg"
@@ -202,7 +198,8 @@ echo =============================================================
 echo 此脚本仅适用于 Windows 10 v1809 或更新版本
 echo =============================================================
 echo.
-pause
+echo 请按任意键退出程序。
+pause >nul
 goto :EOF
 
 :E_Admin
@@ -210,13 +207,13 @@ echo =====================================================
 echo 此脚本需要以管理员身份运行。
 echo =====================================================
 echo.
-pause
+echo 请按任意键退出程序。
+pause >nul
 goto :EOF
 
 :ASK_FOR_REBOOT
-set "choice="
 echo 需要重启以使更改生效。
-set /p choice="是否现在重启电脑？(是=y,否=n)"
-if /I "%choice%"=="y" shutdown -r -t 0
+choice /m 是否现在重启电脑
+if %ERRORLEVEL% equ 1 shutdown -r -t 0
 goto :EOF
 
