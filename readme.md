@@ -11,6 +11,12 @@ Windows 预览体验计划而不登录到 Microsoft 帐户。
 
 该脚本支持 Windows 11 或 Windows 10 1809 和更新版本。
 
+## 验证脚本
+
+此脚本已使用 GPG 密钥 [1C59ABCA4AAD241CF5C6756413BB152251E598DF](https://keyserver.ubuntu.com/pks/lookup?op=index&search=0x1c59abca4aad241cf5c6756413bb152251e598df) 进行签名，下载脚本时请同时下载签名文件（以 sig 为后缀名的文件），
+在 GnuPG 客户端中导入上述密钥，然后运行 `gpg --verify OfflineInsiderEnroll_zh-hans.cmd.sig`
+如果输出包含 Good Signature 则下载正常。
+
 ## 乱码修复
 
 由于 GitHub 上托管的文件采用 UTF-8 编码，所以直接运行会乱码。
