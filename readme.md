@@ -1,25 +1,23 @@
 To download the original English script, [please click here](https://github.com/abbodi1406/offlineinsiderenroll).
 # OfflineInsiderEnroll
 
-![Screenshot of OfflineInsiderEnroll](https://i.imgur.com/hzusXzd.png)
+![OfflineInsiderEnroll 的英文截屏](https://i.imgur.com/hzusXzd.png)
 
 ## 描述
 
-OfflineInsiderEnroll is a simple Windows Command Prompt script to enable access
-to the Windows Insider Program on machines not signed in with Microsoft Account.
+OfflineInsiderEnroll 是一个命令脚本，允许用户注册到
+Windows 预览体验计划而不登录到 Microsoft 账户。
 
-This script is compatible only with Windows 11 or Windows 10 version 1809 and later.
+该脚本支持 Windows 11 或 Windows 10 1809 和更新版本。
 
 ## 用法
 
-This script requires administrative priviliges to run. You can simply execute it
-by right clicking it > `Run as Administrator`.
+此脚本需要管理权限才能运行。您只需右键单击它>“以管理员身份运行”即可执行它。
 
-### Installation and configuration changes
+### 安装和配置更改
 
 After starting, the script offers selection of __*Windows Insider Program*__ channels.
-To make a selection, press a letter coresponding to option you choose and press
-ENTER.
+要进行选择，请按下与您选择的选项对应的数字。
 
 If the machine was not enrolled to the Insider Program, you will get prompted to
 restart your machine to enable *`Microsoft Flight Signing`* which is required by
@@ -33,9 +31,9 @@ correct telemetry settings.
 
 You can verify or modify your telemetry settings as follows:
 
-__Windows 11__: *`Settings`* > *`Privacy and Security`* > *`Diagnostics & feedback`*
+__Windows 11__: *`设置`* > *`Privacy and Security`* > *`Diagnostics & feedback`*
 
-__Windows 10__: *`Settings`* > *`Privacy`* > *`Diagnostics & Feedback`*
+__Windows 10__: *`设置`* > *`Privacy`* > *`Diagnostics & Feedback`*
 
 ### Restoring Windows Insider Program to default options
 
