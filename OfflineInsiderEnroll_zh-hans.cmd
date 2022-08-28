@@ -18,8 +18,7 @@ set "Path=%SysPath%;%SystemRoot%;%SysPath%\Wbem;%SysPath%\WindowsPowerShell\v1.0
 for /f "tokens=6 delims=[]. " %%i in ('ver') do set build=%%i
 if %build% LSS 17763 goto :E_Build
 
-reg query HKU\S-1-5-19 >nul 2>&1
-if %ERRORLEVEL% equ 0 goto :START_SCRIPT
+reg query HKU\S-1-5-19 >nul 2>nul && goto :START_SCRIPT
 set _PSarg="""%~f0""" -elevated
 if defined _args set _PSarg="""%~f0""" %_args:"="""% -elevated
 set _PSarg=%_PSarg:'=''%
@@ -212,7 +211,7 @@ pause >nul
 goto :EOF
 
 :ASK_FOR_REBOOT
-echo 需要重启以使更改生效。
+echo 需要重启才能完成注册
 choice /m "是否现在重启电脑"
 if %ERRORLEVEL% equ 1 shutdown -r -t 0
 goto :EOF
